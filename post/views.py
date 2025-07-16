@@ -1,10 +1,11 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth import get_user_model,logout
-from django.views.generic import CreateView, DetailView,DeleteView,ListView,UpdateView
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model, logout
+from django.views.generic import CreateView, DetailView, DeleteView, ListView, UpdateView, View
 from .models import Post  # Your Post model
-from post.forms import PostForm,Post
+from post.forms import PostForm, Post
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # USER = get_user_model()
 
@@ -32,28 +33,46 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
     
 class PosttDetailView(DetailView):
-    model=Post
-    template_name="post/details.html"
+    model = Post
+    template_name = "post/details.html"
 
 class PostDeleteView(DeleteView):
     model = Post
     template_name = 'post_confirm_delete.html'  # Optional, if you want confirmation page
     success_url = reverse_lazy('list_post')  
-    
+
 class ListPostView(LoginRequiredMixin, ListView):
     template_name = "post/list.html"
-    context_object_name = "all_post"
+    paginate_by = 10
 
     def get_queryset(self):
-        
-        query = self.request.GET.get('q','')
+        query = self.request.GET.get('q', '')
         current_user = self.request.user
-        queryset_filter = {}
         queryset = Post.objects.filter(author=current_user)
         if query:
-            queryset_filter.update({"body_icontains":queryset})
-            queryset = queryset.filter(**queryset_filter)
+            queryset = queryset.filter(body__icontains=query)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        page_obj = context.get('page_obj')
+
+        if page_obj:
+            start = (page_obj.number - 1) * page_obj.paginator.per_page + 1
+            end = min(start + page_obj.paginator.per_page - 1, page_obj.paginator.count)
+            total = page_obj.paginator.count
+            context['page_range_msg'] = f"Showing {start} to {end} of {total} posts."
+        else:
+            context['page_range_msg'] = ""
+
+        return context
+
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except EmptyPage:
+            return redirect(f"{request.path}?page=1")
+
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
