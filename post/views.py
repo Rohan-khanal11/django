@@ -38,7 +38,7 @@ class PosttDetailView(DetailView):
 class PostDeleteView(DeleteView):
     model = Post
     template_name = 'post_confirm_delete.html'  # Optional, if you want confirmation page
-    success_url = reverse_lazy('list_post')  # <-- use 'post_list' exactly as in urls.py
+    success_url = reverse_lazy('list_post')  
     
 class ListPostView(LoginRequiredMixin, ListView):
     template_name = "post/list.html"
@@ -48,9 +48,11 @@ class ListPostView(LoginRequiredMixin, ListView):
         current_user = self.request.user
         queryset = Post.objects.filter(author=current_user)
 
-        query = self.request.GET.get('q')
+        query = self.request.GET.get('q','')
         if query:
-            queryset = queryset.filter(body__icontains=query)
+            queryset = queryset.filter(author=current_user, body__icontains=query)
+        else:
+            queryset = queryset.filter(author=current_user)
         return queryset
 
 
