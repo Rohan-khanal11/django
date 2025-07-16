@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navbar with Login Name</title>
+<style>
+  body { margin: 0; font-family: Arial, sans-serif; }
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 0.5rem 1rem;
+  }
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 0.5rem;
+  }
+  .navbar a:hover {
+    text-decoration: underline;
+  }
+  .login-name {
+    font-weight: bold;
+  }
+  .logout-form {
+    display: inline;
+  }
+  .logout-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+  }
+  .logout-button:hover {
+    color: #ddd;
+  }
+</style>
+{% block css %}
+{% endblock %}
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="{% url 'list_post' %}">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="nav-right">
+    {% if request.user.is_authenticated %}
+      Logged in as: <span class="login-name">{{ request.user.username }}</span>
+      <form method="post" action="{% url 'logout' %}" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="logout-button">Logout</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+  </div>
+</nav>
+
+<div class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+{% block javascript %}
+<script src="{% static 'js/list.js' %}"></script>
+{% endblock %}
+</body>
+</html>
