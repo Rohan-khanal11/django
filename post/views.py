@@ -45,14 +45,14 @@ class ListPostView(LoginRequiredMixin, ListView):
     context_object_name = "all_post"
 
     def get_queryset(self):
-        current_user = self.request.user
-        queryset = Post.objects.filter(author=current_user)
-
+        
         query = self.request.GET.get('q','')
+        current_user = self.request.user
+        queryset_filter = {}
+        queryset = Post.objects.filter(author=current_user)
         if query:
-            queryset = queryset.filter(author=current_user, body__icontains=query)
-        else:
-            queryset = queryset.filter(author=current_user)
+            queryset_filter.update({"body_icontains":queryset})
+            queryset = queryset.filter(**queryset_filter)
         return queryset
 
 
