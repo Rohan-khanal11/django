@@ -38,7 +38,7 @@ class PosttDetailView(DetailView):
 
 class PostDeleteView(DeleteView):
     model = Post
-    template_name = 'post_confirm_delete.html'  # Optional, if you want confirmation page
+    template_name = 'post/confirm_delete.html'   # Optional, if you want confirmation page
     success_url = reverse_lazy('list_post')  
 
 class ListPostView(LoginRequiredMixin, ListView):
