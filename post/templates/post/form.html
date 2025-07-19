@@ -1,21 +1,150 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Post Form</title>
+    <meta charset="UTF-8" />
+    <title>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Post</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            padding: 12px 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .form-wrapper {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px 40px;
+        }
+        .form-title {
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label.form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1.5px solid #ccc;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+        }
+        .form-error {
+            color: #d9534f;
+            font-size: 0.9rem;
+            margin-top: 6px;
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 35px;
+        }
+        .btn {
+            padding: 10px 26px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.25s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #565e64;
+        }
+    </style>
 </head>
 <body>
 
-<h1>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Post</h1>
+<header class="navbar">
+    <div class="navbar-left">
+        <a href="{% url 'list_post' %}">← Back to Posts</a>
+    </div>
+    <div class="navbar-right">
+        Post Manager
+    </div>
+</header>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">
-        {% if form.instance.pk %}Update{% else %}Save{% endif %}
-    </button>
-    <a href="{% url 'list_post' %}">Cancel</a>
-</form>
+<main class="form-wrapper">
+    <h2 class="form-title">
+        {% if form.instance.pk %}Edit Post{% else %}Create a New Post{% endif %}
+    </h2>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="form-error">{{ field.errors|striptags }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div class="form-actions">
+            <a href="{% url 'list_post' %}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">
+                {% if form.instance.pk %}Update{% else %}Save{% endif %}
+            </button>
+        </div>
+    </form>
+</main>
 
 </body>
 </html>

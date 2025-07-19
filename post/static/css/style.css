@@ -7,10 +7,11 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9fbfd;
-  color: #2c3e50;
+  background-color: #f9fbfd; /* from your snippet */
+  color: #2c3e50; /* darker color */
   line-height: 1.65;
   min-height: 100vh;
+  padding: 20px; /* your padding */
 }
 
 /* === NAVBAR === */
@@ -21,6 +22,8 @@ body {
   background: linear-gradient(90deg, #2c3e50 0%, #34495e 100%);
   color: #ecf0f1;
   padding: 1rem 2rem;
+  border-radius: 8px;
+  margin-bottom: 30px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -41,6 +44,11 @@ body {
   text-decoration: underline;
 }
 
+.app-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
 .login-name {
   font-weight: 700;
   margin-left: 0.5rem;
@@ -56,6 +64,79 @@ body {
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.05);
   min-height: 60vh;
+}
+
+/* === FORM WRAPPER & CARD === */
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  width: 100%;
+}
+
+.form-title {
+  text-align: center;
+  margin-bottom: 24px; /* increased margin */
+  font-size: 1.6rem;    /* slightly bigger */
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* === FORM GROUPS === */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select,
+form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  flex-grow: 1;
+}
+
+/* Added box-shadow on focus for better UI */
+form input[type="text"]:focus,
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #1abc9c;
+  outline: none;
+  box-shadow: 0 0 6px rgba(26, 188, 156, 0.4);
+}
+
+.form-error {
+  color: #e74c3c; /* stronger red */
+  font-size: 0.9rem;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* === FORM ACTIONS === */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
 }
 
 /* === BUTTONS === */
@@ -81,6 +162,11 @@ button:hover,
   box-shadow: 0 5px 15px rgba(22,160,133,0.6);
 }
 
+.btn-primary {
+  background-color: #4a90e2; /* your primary blue */
+  color: white;
+}
+
 .btn-danger {
   background-color: #e74c3c;
   box-shadow: 0 3px 6px rgba(231,76,60,0.4);
@@ -94,6 +180,7 @@ button:hover,
 .btn-secondary {
   background-color: #7f8c8d;
   box-shadow: 0 3px 6px rgba(127,140,141,0.4);
+  color: #333;
 }
 
 .btn-secondary:hover {
@@ -188,22 +275,20 @@ form.d-flex {
   align-items: center;
 }
 
-
-
 form.d-flex input[type="text"] {
   padding: 0.6rem 1rem;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  height: 100%;
 }
 
 form.d-flex button {
   padding: 0.6rem 1.3rem;
   border-radius: 6px;
   font-size: 1rem;
-  height: 100%; /* ✅ Match input height visually */
+  height: 100%;
 }
-
 
 /* === PAGINATION === */
 .pagination {
@@ -252,22 +337,7 @@ form.d-flex button {
   cursor: pointer;
 }
 
-/* === FORM === */
-form input[type="text"] {
-  flex-grow: 1;
-  padding: 0.55rem 1rem;
-  font-size: 1rem;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  transition: border-color 0.3s ease;
-}
-
-form input[type="text"]:focus {
-  border-color: #1abc9c;
-  outline: none;
-}
-
-/* === TEXT === */
+/* === TEXT UTILITIES === */
 .text-center {
   text-align: center !important;
 }
