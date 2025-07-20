@@ -29,19 +29,19 @@
             text-decoration: none;
             font-weight: 500;
         }
+        .form-title {
+            margin: 40px auto 20px;
+            font-size: 1.8rem;
+            color: #333;
+            text-align: center;
+        }
         .form-wrapper {
             max-width: 600px;
-            margin: 40px auto;
+            margin: 0 auto;
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             padding: 30px 40px;
-        }
-        .form-title {
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-            color: #333;
-            text-align: center;
         }
         .form-group {
             margin-bottom: 20px;
@@ -121,29 +121,31 @@
     </div>
 </header>
 
-<main class="form-wrapper">
+<main>
     <h2 class="form-title">
         {% if form.instance.pk %}Edit Post{% else %}Create a New Post{% endif %}
     </h2>
 
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="form-group">
-            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}
-                <div class="form-error">{{ field.errors|striptags }}</div>
-            {% endif %}
-        </div>
-        {% endfor %}
-        <div class="form-actions">
-            <a href="{% url 'list_post' %}" class="btn btn-secondary">Cancel</a>
-            <button type="submit" class="btn btn-primary">
-                {% if form.instance.pk %}Update{% else %}Save{% endif %}
-            </button>
-        </div>
-    </form>
+    <div class="form-wrapper">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}
+                    <div class="form-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <div class="form-actions">
+                <a href="{% url 'list_post' %}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    {% if form.instance.pk %}Update{% else %}Save{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
 </main>
 
 </body>
