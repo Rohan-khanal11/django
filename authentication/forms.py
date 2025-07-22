@@ -1,4 +1,6 @@
 from django import forms
+from .models import Profile
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -17,3 +19,17 @@ class LoginForm(forms.Form):
             'class': 'form-control'
         })
     )
+    
+
+
+class ProfileForm(forms.ModelForm):
+   
+    class Meta:
+        model = Profile
+        fields = ['user', 'dob', 'position']
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+        if request:
+            self.fields['user'].initial = request.user.username

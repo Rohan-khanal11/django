@@ -290,6 +290,24 @@ form.d-flex button {
   height: 100%;
 }
 
+
+.messages {
+  list-style: none;
+  margin: 20px auto;
+  max-width: 600px;
+  padding: 0;
+}
+.messages li {
+  padding: 10px 20px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+.messages li.error {
+  background: #ffe6e6;
+  color: #a94442;
+  border: 1px solid #f5c6cb;
+}
+
 /* === PAGINATION === */
 .pagination {
   list-style: none;

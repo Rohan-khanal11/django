@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="profile-container">
+    <h2>{% if form.instance.pk %}Edit Profile{% else %}Create Profile{% endif %}</h2>
+    <p>Logged in as: {{ request.user.username }}</p>
+
+    <form method="post" class="profile-form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <div class="form-group">
+        <label for="id_username">Username (for display only)</label>
+        <input type="text" id="id_username" name="username" value="{{ request.user.username }}" readonly />
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.dob.id_for_label }}">Date of Birth</label>
+        {{ form.dob.errors }}
+        {{ form.dob }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.position.id_for_label }}">Select Position</label>
+        {{ form.position.errors }}
+        {{ form.position }}
+      </div>
+
+      <button type="submit" class="submit-btn">Save Profile</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block styles %}
+<style>
+  .profile-container {
+    max-width: 420px;
+    margin: 50px auto;
+    background: #fefefe;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", sans-serif;
+  }
+
+  .profile-container h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .profile-container p {
+    text-align: center;
+    color: #555;
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+</style>
+{% endblock %}
